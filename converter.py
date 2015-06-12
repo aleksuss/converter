@@ -8,7 +8,7 @@ import subprocess
 
 
 def usage():
-    return """Not enough prameters.
+    return """Not enough parameters.
 Use: python converter.py /dir/with/sources /output/dir"""
 
 def which(program):
@@ -44,7 +44,7 @@ def convert():
     outdir = sys.argv[2]
 
     if not os.path.exists(indir):
-        print("Input direcory doesn't exist.")
+        print("Input directory doesn't exist.")
         exit(1)
 
     try:
