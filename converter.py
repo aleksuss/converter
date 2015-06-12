@@ -28,45 +28,49 @@ def which(program):
 
     return None
 
-if len(sys.argv) < 3:
-    pass
-    print(usage())
-    exit(1)
+def convert():
+    if len(sys.argv) < 3:
+        pass
+        print(usage())
+        exit(1)
 
-cmd = which('ffmpeg')
+    cmd = which('ffmpeg')
 
-if not cmd:
-    print("FFMPEG not found on your system. Install it first")
-    exit(1)
+    if not cmd:
+        print("FFMPEG not found on your system. Install it first")
+        exit(1)
 
-indir = sys.argv[1]
-outdir = sys.argv[2]
+    indir = sys.argv[1]
+    outdir = sys.argv[2]
 
-if not os.path.exists(indir):
-    print("Input direcory doesn't exist.")
-    exit(1)
+    if not os.path.exists(indir):
+        print("Input direcory doesn't exist.")
+        exit(1)
 
-try:
-    for file in os.listdir(indir):
-        if file.startswith('.'):
-            continue
+    try:
+        for file in os.listdir(indir):
+            if file.startswith('.'):
+                continue
 
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
 
 
-        input_file = indir + '/' + file
-        output_file = outdir + '/' + os.path.splitext(file)[0] + '.mp3'
+            input_file = os.path.join(indir, file)
+            output_file = os.path.join(outdir, os.path.splitext(file)[0] + '.mp3')
 
-        command = [cmd, '-y', '-v', '0',
-                        '-i', input_file,
-                        '-c:a', 'libmp3lame',
-                        '-ab', '256k', output_file]
+            command = [cmd, '-y', '-v', '0',
+                            '-i', input_file,
+                            '-c:a', 'libmp3lame',
+                            '-ab', '256k', output_file]
 
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        p.stdout.readline()
-        p.terminate()
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.stdout.readline()
+            p.terminate()
 
-except Exception as e:
-    print("Error: {}".format(e))
-    exit(1)
+    except Exception as e:
+        print("Error: {}".format(e))
+        exit(1)
+
+if __name__ == "__main__":
+    convert()
